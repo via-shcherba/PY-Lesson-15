@@ -6,35 +6,37 @@ import random
 class TestCard(unittest.TestCase):
     def test_generate_card(self):
         card = Card()
-        self.assertEqual(len(card.numbers), 3)  
+        self.assertEqual(len(card.numbers), 3)
         for row in card.numbers:
-            self.assertEqual(len(row), 9)  
-            self.assertTrue(all(isinstance(num, (int, str)) for num in row))  
+            self.assertEqual(len(row), 9)
+            self.assertTrue(all(isinstance(num, (int, str)) for num in row))          
 
     def test_mark_number(self):
         card = Card()
-        number_to_mark = card.numbers[0][0]  
-        self.assertTrue(card.mark_number(number_to_mark))  
-        self.assertIn('-', card.numbers[0])  
+        number_to_mark = card.numbers[0][0]
+        self.assertTrue(card.mark_number(number_to_mark))
+        self.assertIn('-', card.numbers[0])
 
     def test_mark_number_not_found(self):
         card = Card()
         self.assertFalse(card.mark_number(100)) 
 
-
 class TestPlayer(unittest.TestCase):
     def test_make_move_mark(self):
         player = Player("Тестовый Игрок")
-        number_to_mark = player.card.numbers[0][0]  
+        number_to_mark = player.card.numbers[0][0]
         with patch('builtins.input', side_effect=['y']):
-            self.assertTrue(player.make_move(number_to_mark))  
+            self.assertTrue(player.make_move(number_to_mark))
 
     def test_make_move_not_mark(self):
         player = Player("Тестовый Игрок")
-        number_to_mark = player.card.numbers[0][0]  
+        number_to_mark = player.card.numbers[0][0]
         with patch('builtins.input', side_effect=['n']):
-            self.assertFalse(player.make_move(number_to_mark))  
+            self.assertFalse(player.make_move(number_to_mark))
 
+    def test_player_str(self):
+        player = Player("Тестовый Игрок")
+        self.assertIn("Игрок: Тестовый Игрок, Карточка:", str(player))               
 
 class TestGame(unittest.TestCase):
     @patch('random.shuffle')
@@ -46,8 +48,8 @@ class TestGame(unittest.TestCase):
         game.balls = [1, 2, 3, 4, 5]
 
         with patch('builtins.input', side_effect=['y', 'y', 'y', 'y', 'y']):
-            game.play()  
-        self.assertTrue(len(game.balls) == 4) 
+            game.play()
+        self.assertTrue(len(game.balls) == 4)
 
 
 if __name__ == '__main__':
