@@ -1,5 +1,5 @@
 import random
-
+    
 class Card:
     def __init__(self):
         self.numbers = self.generate_card()
@@ -13,8 +13,8 @@ class Card:
 
     def mark_number(self, number):
         for row in self.numbers:
-            for i in range(len(row)):
-                if row[i] == number:
+            for i, cell in enumerate(row):
+                if cell == number:
                     row[i] = '-'
                     return True
         return False
@@ -25,7 +25,12 @@ class Card:
             card_str += ' '.join(f"{str(num).rjust(2)}" for num in row) + "\n"
         card_str += "--------------------------"
         return card_str
+    
+    def __eq__(self, other):
+        return isinstance(other, Card) and self.numbers == other.numbers
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 class Player:
     def __init__(self, name):
@@ -49,6 +54,14 @@ class Player:
                 print(f"{self.name} пропускает ход.")
                 return True
 
+    def __str__(self):
+        return f"Игрок: {self.name}, Карточка:\n{self.card}"
+
+    def __eq__(self, other):
+        return isinstance(other, Player) and self.name == other.name and self.card == other.card
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 class Game:
     def __init__(self, player1, player2):
@@ -68,7 +81,6 @@ class Game:
                     return
             print("\n" + "="*30 + "\n")
         print("Игра окончена!")
-
 
 if __name__ == "__main__":
     player1 = Player("Игрок 1")
